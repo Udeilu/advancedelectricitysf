@@ -39,7 +39,7 @@ public class InventoryListener implements Listener {
 							return;
 						}
 						ItemEnergy.chargeInventory(other, Float.valueOf(-10000));
-						other.sendTitle("§4EMP", "§4§kiiiiiiiii", 10, 70, 20);
+						other.sendTitle("Â§4EMP", "Â§4Â§kiiiiiiiii", 10, 70, 20);
 						other.setGlowing(true);
 						Bukkit.getScheduler().runTaskLater(Main.plugin, () -> other.setGlowing(false), 40);
 					}
@@ -56,7 +56,7 @@ public class InventoryListener implements Listener {
 							return;
 						}
 						ItemEnergy.chargeInventory(other, Float.valueOf(-10000));
-						other.sendTitle("§4EMP", "§4§kiiiiiiiii", 10, 70, 20);
+						other.sendTitle("Â§4EMP", "Â§4Â§kiiiiiiiii", 10, 70, 20);
 						other.setGlowing(true);
 						Bukkit.getScheduler().runTaskLater(Main.plugin, () -> other.setGlowing(false), 40);
 					}
@@ -83,7 +83,7 @@ public class InventoryListener implements Listener {
         Player p = event.getPlayer();
         if(SlimefunManager.isItemSimiliar(p.getInventory().getChestplate(), Items.ARCHWING, false)) p.getEquipment().getChestplate().setDurability((short)0);
         if(!SlimefunManager.isItemSimiliar(p.getItemInHand(), Items.ARCHWING_CONTROLLER, false)) return;
-        if ((p.isGliding()) && (p.getLocation().getPitch() < 0) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
+        if ((p.isGliding()) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
             p.setVelocity(p.getLocation().getDirection().multiply(1));
         }
 		if((p.isGliding()) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
