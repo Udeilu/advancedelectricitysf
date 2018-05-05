@@ -1,0 +1,5 @@
+name: AdvancedElectricity
+version: 1.0
+author: Udeilu
+main: me.udeilu.advancedelectricity.Main
+softdepend: [CS-CoreLib, Slimefun]
