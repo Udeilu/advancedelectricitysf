@@ -1,1 +1,1 @@
-A Slimefun addon that I made a year ago.
+https://www.spigotmc.org/resources/advanced-electricity.56514/
