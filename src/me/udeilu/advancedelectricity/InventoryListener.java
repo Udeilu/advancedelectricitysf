@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.util.Vector;
-
 import me.mrCookieSlime.CSCoreLibPlugin.general.Player.PlayerInventory;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.energy.ItemEnergy;
@@ -39,7 +38,7 @@ public class InventoryListener implements Listener {
 							return;
 						}
 						ItemEnergy.chargeInventory(other, Float.valueOf(-10000));
-						other.sendTitle("§4EMP", "§4§kiiiiiiiii", 10, 70, 20);
+						other.sendTitle("§4EMP", null, 10, 70, 20);
 						other.setGlowing(true);
 						Bukkit.getScheduler().runTaskLater(Main.plugin, () -> other.setGlowing(false), 40);
 					}
@@ -56,7 +55,7 @@ public class InventoryListener implements Listener {
 							return;
 						}
 						ItemEnergy.chargeInventory(other, Float.valueOf(-10000));
-						other.sendTitle("§4EMP", "§4§kiiiiiiiii", 10, 70, 20);
+						other.sendTitle("§4EMP", null, 10, 70, 20);
 						other.setGlowing(true);
 						Bukkit.getScheduler().runTaskLater(Main.plugin, () -> other.setGlowing(false), 40);
 					}
@@ -81,16 +80,16 @@ public class InventoryListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         Player p = event.getPlayer();
+        Location loc = p.getLocation();
         if(SlimefunManager.isItemSimiliar(p.getInventory().getChestplate(), Items.ARCHWING, false)) p.getEquipment().getChestplate().setDurability((short)0);
         if(!SlimefunManager.isItemSimiliar(p.getItemInHand(), Items.ARCHWING_CONTROLLER, false)) return;
-        if ((p.isGliding()) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
-            p.setVelocity(p.getLocation().getDirection().multiply(1));
+        if ((p.isGliding()) && (p.getLocation().getPitch() < 0) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
+        	p.setVelocity(p.getLocation().getDirection().multiply(Main.plugin.getConfig().getDouble("archwing-base")));
         }
-		if((p.isGliding()) && (SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false))) {
-			p.setGlowing(true);
-		} else {
-			p.setGlowing(false);
-		}
+        if((p.isGliding()) && (p.isSneaking())) {
+        	p.setVelocity(p.getLocation().getDirection().normalize().multiply(Main.plugin.getConfig().getDouble("archwing-boost")));
+        	loc.getWorld().spigot().playEffect(loc, Effect.LAVA_POP, 0, 0, 0.2F, 0.0F, 0.2F, 0.0F, 30, 10);
+        }
     }
 	
     @SuppressWarnings("deprecation")
@@ -98,8 +97,8 @@ public class InventoryListener implements Listener {
     public void onToggleSneak(PlayerToggleSneakEvent event) {
         Player p = event.getPlayer();
         if(!SlimefunManager.isItemSimiliar(p.getEquipment().getChestplate(), Items.ARCHWING, false)) return;
-        
         if (event.isSneaking()) {
+        	if(Main.plugin.getConfig().getBoolean("archwing-shift-launch") == false) return;
         	if(p.isOnGround()) {
         		if(!SlimefunManager.isItemSimiliar(p.getItemInHand(), Items.ARCHWING_CONTROLLER, false)) return;
         		Location loc = p.getLocation();
