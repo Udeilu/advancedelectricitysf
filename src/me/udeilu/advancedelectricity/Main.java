@@ -11,6 +11,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +33,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 
 public class Main extends JavaPlugin {	
 	public static Main plugin;
-
+	FileConfiguration config = getConfig();
 	public void onEnable() {
 		plugin = this;
 		if(getServer().getPluginManager().isPluginEnabled("Slimefun")) {
@@ -46,6 +47,9 @@ public class Main extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;	
 		}
+		
+		plugin.saveDefaultConfig();
+
 		
 		getServer().getScheduler().runTaskTimer(this, new Runnable() {
 			@Override
